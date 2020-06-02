@@ -18,7 +18,7 @@ from keras.layers import Dropout
 import sklearn
 from sklearn.model_selection import train_test_split
 
-
+'''
 # print GPU details ...
 import GPUtil as GPU
 GPUs = GPU.getGPUs()
@@ -28,25 +28,29 @@ print("Total Available GPU memory: {} MB".format(gpu.memoryTotal))
 print("Used GPU memory: {} MB".format(gpu.memoryUsed))
 print("Total Free GPU memory: {} MB".format(gpu.memoryFree))
 print()
+'''
 
+'''
 # printing installed tensorflow/keras/OpenCV versions
 print("Current OpenCV version", cv2.__version__)
 print("Using TensorFlow version", tf.__version__)
 print("Using Keras version", keras.__version__)
 
+'''
+
 # 1. Start of dataset building
 lines = []
-with open('./my_data/driving_log.csv') as csvfile:
+with open('./data/driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
     for line in reader:
         lines.append(line)
 
 images = []
 measurements = []
-directory = './my_data/IMG/'
+directory = './data/IMG/'
 
 # steering angle correction
-correction = 0.22
+correction = 0.25
 
 # setting data augmentation activation to True/False
 augment = True
@@ -99,20 +103,7 @@ for line in lines:
 X_train = np.array(images)
 steering_angles = np.array(measurements)
 
-# function to display some images
-def disp_images():
-    f, ax = plt.subplots(2, 3, figsize=(50, 10))
-    ax = ax.ravel()
-    for i in range(6):
-        index = random.randint(0, len(X_train))
-        image = X_train[index]
-        ax[i].imshow(image)
-        plt.axis('off')
-        ax[i].set_title("steering angle - " + str(steering_angles[index]), fontsize=20)
-
-    # saving the figure
-    plt.savefig('markdown_images/sample_images.jpg')
-
+'''
 
 def print_dataset_info():
 
@@ -139,52 +130,14 @@ def print_dataset_info():
 
 # uncomment this section to print information on dataset
 print_dataset_info()
-disp_images()
 
 '''
-model = Sequential()
-# Preprocess incoming data, centered around zero with small standard deviation 
-model.add(Lambda(lambda x: x/127.5 - 1., input_shape=(ch, row, col)))
-
-model.add(Cropping2D(cropping=((50,20),(0,0)), input_shape=(160,320,3)))
-
-# 1st Convolutional layer
-model.add(Conv2D(24, (5, 5), subsample = (2,2), activation="relu"))
-# 2nd Convolutional layer
-model.add(Conv2D(36, (5, 5), subsample = (2,2), activation="relu"))
-# 3rd Convolutional layer
-model.add(Conv2D(48, (5, 5), subsample = (2,2), activation="relu"))
-# 4th Convolutional layer
-model.add(Conv2D(64, (3, 3), activation="relu"))
-# 5th Convolutional layer
-model.add(Conv2D(64, (3, 3), activation="relu"))
-# 6th Convolutional layer
-model.add(Conv2D(64, (3, 3), activation="relu"))
-
-model.add(Dropout(0.5))
-
-# flatten layers into a vector
-model.add(Flatten())
-
-# four fully connected layers
-model.add(Dense(100, activation='relu'))
-model.add(Dense(50, activation='relu'))
-model.add(Dense(10, activation='relu'))
-model.add(Dense(1))
-
-model.compile(loss='mse', optimizer ='adam')
-
-# fit model with a validation set of 20%
-model.fit_generator(train_generator, steps_per_epoch=math.ceil(len(train_samples)/batch_size), validation_data=validation_generator, validation_steps=ceil(len(validation_samples)/batch_size), epochs=5, verbose=1)
-'''
-
 
 # 2. Start of Network Architecture
 # NVIDIA network architecture
 model = Sequential()
-
-# image preprocessing - normalizing the pixel values and cropping the image
-model.add(Lambda(lambda x:(x/255.0)-0.5, input_shape=(160,320,3)))
+# image preprocessing - normalizing the pixel values from (-1, 1)
+model.add(Lambda(lambda x:(x/127.5)-1.0, input_shape=(160,320,3)))
 # cropping top 50 pixels and 20 pixels from the bottom
 model.add(Cropping2D(cropping=((50,20),(0,0)), input_shape=(160,320,3)))
 
@@ -201,6 +154,7 @@ model.add(Conv2D(64, (3, 3), activation="relu"))
 # 6th Convolutional layer
 model.add(Conv2D(64, (3, 3), activation="relu"))
 
+# Dropout layer 50%
 model.add(Dropout(0.5))
 
 # flatten layers into a vector
@@ -216,7 +170,7 @@ model.compile(loss='mse', optimizer ='adam')
 
 # fit model with a validation set of 20%
 model.fit(X_train, steering_angles, validation_split=0.2, shuffle=True, epochs=10)
-model.save('cnn_model.h5')
+model.save('model.h5')
 
 model.summary()
 
