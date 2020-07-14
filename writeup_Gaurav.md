@@ -52,7 +52,7 @@ In difference with the layer architecture shown above, I introduced a 50% dropou
 
 Here is the model summary from my model:
 
-![image](./examples/model_summary.jpg)
+![image](./example/model_summary.JPG)
 
 ### 2. Attempts to reduce overfitting in the model
 
@@ -113,7 +113,7 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 Here is the model summary:
 
-![model](./examples/model_summary.jpg)
+![model](./examples/model_summary.JPG)
 
 Here is the code for the implemented model:
 
