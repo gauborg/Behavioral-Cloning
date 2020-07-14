@@ -77,7 +77,7 @@ I created my own data by manually driving the car using the simulator. Here is t
 
 * To compensate the left bias and to generalize the model, I recorded one more lap of the track in reverse direction. (i.e. clockwise)
 
-* During dataset preparation, I will flip the images in order to augment the data so that the model is more generalized.
+* During dataset preparation, I will the images in order to augment the data so that the model is more generalized.
 
 The total data captured was about 13590 measurements.
 
@@ -92,7 +92,7 @@ The overall strategy for deriving a model architecture was to ensure that the ca
 1. My first step was to prepare dataset for training our model. I read the file *driving_log.csv* and parsed the lines to acquire the data for center, left, and right images along with the steering angles.
 2. While reading the dataset, I also flipped the images to augment the dataset. I also created a correction factor for the steering correction. (I played with this parameter from 0.1 to 0.25 and finally settled on the value of 0.25.) Here is a sample of the flipped image:
    
-    ![flipped_image](./examples/flip_images.jpg)
+    ![flipped_image](./examples/flip_images.JPG)
 
     This doubled my data from 13590 to 27180 measurements.
 
@@ -203,7 +203,7 @@ model.save('model.h5')
 
 I plotted the graphs of training and validation losses against the number of epochs
 
-![plot](./examples/plot_loss.jpg)
+![plot](./examples/plot_loss.JPG)
 
 I ran the model for 10 Epochs and saved results from each epoch. I plotted the mean square error vs epochs and saw that mean square error for training set reduces with each epoch and remains almost constant at 0.06 and validation set remained almost constant after 5 epochs hence used the result after epoch 5 to run the model and it successfully completed the first track. Mean square error for validation set is more than the training set indicating that the model is not overfitting.
 
