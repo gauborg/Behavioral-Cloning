@@ -25,6 +25,7 @@ My project includes the following files:
 * [model.h5](./model.h5) - containing a trained convolution neural network 
 * [writeup_report_Gaurav.md](./writeup_report_Gaurav.md) - report summarizing the results
 * [video.mp4](./video.mp4) - video showing the vehicle completing one lap in autonomous mode
+* [autonomous_mode.mp4](./autonomous_mode.mp4) - another perspective video showing the 3 vehicle completing one lap in autonomous mode (sped up video)
 
 ### 2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
